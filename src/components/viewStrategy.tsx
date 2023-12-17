@@ -1,3 +1,17 @@
+// TODO: all contracts: add the value in the left axis of the current contract PL in orange at current price
+// TODO: short and long: remove the VI and days left info
+// TODO: short and long: don't display the right axis
+// TODO: short: set current price @ 45$
+// TODO: long: set current price @ 55$
+// TODO: short put: set premium @ 4$
+// TODO: short put: set current price @ 48$
+// TODO: long put: set premium @ 4$
+// TODO: long put: set current price @ 44$
+// TODO: short call: set premium @ 4$
+// TODO: short call: set current price @ 52$
+// TODO: long call: set premium @ 4$
+// TODO: long call: set current price @ 56$
+
 import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -143,6 +157,8 @@ const Strategy = (charId: string) => {
   };
   const onContractTypeChange = (event: any) => {
     setSelectedContractType(event.target.id);
+    setDrawSigmaLines(false);
+    if (consts.AUTOLOAD_DEFAULT) setLoadDefault(true);
   };
 
   useEffect(() => {
@@ -532,7 +548,7 @@ const Strategy = (charId: string) => {
     );
   };
   const displayNoLegContractParameters = () => {
-    return <div>No leg contract</div>;
+    return <div></div>;
   };
   const displayOneLegContractParameters = () => {
     return (
@@ -677,7 +693,14 @@ const Strategy = (charId: string) => {
       return displayTwoLegsContractParameters();
     }
   };
-  const displaySigmaLinesSelector = () => {
+  const displaySigmaLinesSelector = (contract: any) => {
+    if (typeof contract === "boolean") {
+      return <div></div>;
+    }
+    if (contract.getLegs() === 0) {
+      return <div></div>;
+    }
+
     return (
       <div>
         <Row>
@@ -733,7 +756,7 @@ const Strategy = (charId: string) => {
       </div>
     );
   };
-  const displayPriceInfo = () => {
+  const displayPriceInfo = (contract: any) => {
     return (
       <div>
         <Row>
@@ -782,22 +805,30 @@ const Strategy = (charId: string) => {
           </Row>
         )}
 
-        <Row>
-          <Col xl={3} className="justify-content-md-left">
-            Sigma
-          </Col>
-          <Col xl={2} className="text-sm-end param_text">
-            {sigma.toFixed(2)}
-          </Col>
-        </Row>
-        <Row>
-          <Col xl={3} className="justify-content-md-left">
-            Initial P&L
-          </Col>
-          <Col xl={2} className="text-sm-end param_text">
-            {cost.toFixed(0)} USD
-          </Col>
-        </Row>
+        {contract.getLegs() === 0 ? (
+          <></>
+        ) : (
+          <Row>
+            <Col xl={3} className="justify-content-md-left">
+              Sigma
+            </Col>
+            <Col xl={2} className="text-sm-end param_text">
+              {sigma.toFixed(2)}
+            </Col>
+          </Row>
+        )}
+        {contract.getLegs() === 0 ? (
+          <></>
+        ) : (
+          <Row>
+            <Col xl={3} className="justify-content-md-left">
+              Initial P&L
+            </Col>
+            <Col xl={2} className="text-sm-end param_text">
+              {cost.toFixed(0)} USD
+            </Col>
+          </Row>
+        )}
         <Row>
           <Col xl={2} className="justify-content-md-left">
             Break-even
@@ -827,9 +858,9 @@ const Strategy = (charId: string) => {
           {displayTwoLegsOptionContractTypes()}
           {displayContractNumbers()}
           {displayContractParameters(theContract)}
-          {displaySigmaLinesSelector()}
+          {displaySigmaLinesSelector(theContract)}
         </Col>
-        <Col>{displayPriceInfo()}</Col>
+        <Col>{displayPriceInfo(theContract)}</Col>
       </Row>
       <Row>
         <Col>

@@ -112,6 +112,30 @@
 
 }
 
+.dark-gray-hashed-line {
+  stroke: rgb(9, 5, 5);
+  stroke-opacity: 1;
+  stroke-width: 1px;
+  stroke-dasharray: 8, 4;
+  visibility: visible;
+}
+.blue-hashed-line {
+  stroke: rgb(46, 42, 178);
+  stroke-opacity: 1;
+  stroke-width: 1px;
+  fill-opacity: 0;
+  stroke-dasharray: 8, 4;
+  visibility: visible;
+}
+.blue-line {
+  stroke: rgb(46, 42, 178);
+  stroke-opacity: 1;
+  stroke-width: 2px;
+  fill-opacity: 0;
+  visibility: visible;
+}
+
+
 
 .white-text {
   fill-opacity: 1;

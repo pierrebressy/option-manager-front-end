@@ -14,6 +14,7 @@ export const STRATEGY_CHART_DEFAULT_MARGIN = {
 
 export const TABLE_LIST_ELEMENTS_PER_PAGE = 25;
 
+export const AUTOLOAD_DEFAULT = true;
 export const NUM_SHARES_PER_CONTRACT = 100;
 export const CONTRACT_MIN_PRICE = 0;
 export const CONTRACT_MAX_PRICE = 1000;

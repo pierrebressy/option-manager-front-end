@@ -80,6 +80,15 @@ export class StrategyChart {
       .attr("x2", this.x(price))
       .attr("y2", this.yRight(+1));
   }
+  drawFullVerticalDarkGrayLine(price: number = 0.0) {
+    this.svg
+      .append("line")
+      .attr("class", "dark-gray-hashed-line")
+      .attr("x1", this.x(price))
+      .attr("y1", this.yRight(-1))
+      .attr("x2", this.x(price))
+      .attr("y2", this.yRight(+1));
+  }
   drawCircleLeftScale(price: number = 0.0, pl: number = 0.0, cssClass: string) {
     this.svg
       .append("circle")
@@ -246,10 +255,7 @@ export class StrategyChart {
     this.svg
       .append("path")
       .datum(data_sigma)
-      .attr("class", "line")
-      .attr("fill", "none")
-      .attr("stroke", "magenta")
-      .attr("stroke-width", 1)
+      .attr("class", "blue-hashed-line")
       .attr("visibility", "visible")
       .attr("clip-path", "url(#" + this.clipPath + ")")
       .attr("d", line_sigma as any);
@@ -257,17 +263,13 @@ export class StrategyChart {
     this.svg
       .append("path")
       .datum(data_sigma_int)
-      .attr("class", "line")
-      .attr("fill", "none")
-      .attr("stroke", "rgb(10, 82, 216)")
-      .attr("stroke-width", 1)
-      .attr("visibility", "visible")
+      .attr("class", "blue-line")
       .attr("clip-path", "url(#" + this.clipPath + ")")
       .attr("d", line_sigma as any);
 
     this.drawCircleLeftScale(currentPriceValue, 0, "black-circle");
 
-    // success rate line
+    // success horizontal rate line
     this.svg
       .append("line")
       .attr("stroke", "gray")
@@ -298,10 +300,10 @@ export class StrategyChart {
       success_rate,
       "black-circle",
     );
-    this.drawFullVerticalGrayLine(currentPriceValue);
+    //this.drawFullVerticalGrayLine(currentPriceValue);
     for (let k = 1; k < 4; k++) {
-      this.drawFullVerticalGrayLine(currentPriceValue + k * sigma);
-      this.drawFullVerticalGrayLine(currentPriceValue - k * sigma);
+      this.drawFullVerticalDarkGrayLine(currentPriceValue + k * sigma);
+      this.drawFullVerticalDarkGrayLine(currentPriceValue - k * sigma);
       this.drawText(
         currentPriceValue - k * sigma,
         0,
@@ -481,6 +483,19 @@ export class StrategyChart {
       .attr("id", "yAxisRight" + this.id)
       .attr("transform", `translate(${this.width},0)`)
       .call(this.yAxisRight);
+
+    this.svg
+      .append("text")
+      .attr("x", 0)
+      .attr("y", -10)
+      .attr("class", "white-text")
+      .text("P/L");
+    this.svg
+      .append("text")
+      .attr("x", this.width)
+      .attr("y", -10)
+      .attr("class", "white-text")
+      .text("% success");
   }
 
   createChart(

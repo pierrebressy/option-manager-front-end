@@ -1435,6 +1435,12 @@ export class Short extends OptionContract {
   getBreakEvenValue() {
     return this.getPru();
   }
+  getMaxLost() {
+    return Number.NEGATIVE_INFINITY
+  }
+  getMaxProfit() {
+    return this.getBreakEvenValue() * (-this.getQty());
+  }
   getYlimits() {
     let ymin = -100;
     let ymax = 100;
@@ -1497,6 +1503,12 @@ export class Long extends OptionContract {
   }
   getBreakEvenValue() {
     return this.getPru();
+  }
+  getMaxLost() {
+    return this.getBreakEvenValue() * this.getQty();
+  }
+  getMaxProfit() {
+    return Number.POSITIVE_INFINITY
   }
   getYlimits() {
     let ymin = -100;
