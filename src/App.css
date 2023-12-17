@@ -1,0 +1,554 @@
+.App {
+  border: 5px solid rgb(0, 0, 0);
+  text-align: left;
+}
+
+.App-logo-UNUSED {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #000000;
+  min-height: 100vh;
+  font-size: 15px;
+  color: rgb(255, 255, 255);
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+
+.circle-current-price {
+  fill-opacity: 1;
+  fill: rgb(212, 59, 194);
+  stroke-opacity: 1;
+  stroke: rgb(255, 255, 255);
+  stroke-width: 1px;
+  visibility: visible;
+}
+.red-circle {
+  fill-opacity: 1;
+  fill: rgb(255, 0, 0);
+  stroke-opacity: 1;
+  stroke: rgb(255, 255, 255);
+  stroke-width: 1px;
+  visibility: visible;
+}
+.green-circle {
+  fill-opacity: 1;
+  fill: rgb(37, 133, 25);
+  stroke-opacity: 1;
+  stroke: rgb(255, 255, 255);
+  stroke-width: 1px;
+  visibility: visible;
+}
+.cyan-circle {
+  fill-opacity: 1;
+  fill: cyan;
+  stroke-opacity: 1;
+  stroke: rgb(255, 255, 255);
+  stroke-width: 1px;
+  visibility: visible;
+}
+.black-circle {
+  fill-opacity: 1;
+  fill: black;
+  stroke-opacity: 1;
+  stroke: rgb(255, 255, 255);
+  stroke-width: 1px;
+  visibility: visible;
+}
+.green-rectangle {
+  fill-opacity: 1;
+  fill: rgb(37, 133, 25);
+  stroke-opacity: 1;
+  stroke: rgb(37, 133, 25);
+  stroke-width: 1px;
+  visibility: visible;
+}
+.blue-rectangle {
+  fill-opacity: 1;
+  fill: rgb(9, 155, 188);
+  stroke-opacity: 1;
+  stroke: rgb(9, 155, 188);
+  stroke-width: 1px;
+  visibility: visible;
+}
+.red-rectangle {
+  fill-opacity: 1;
+  fill: rgb(255, 0, 0);
+  stroke-opacity: 1;
+  stroke: rgb(255, 0, 0);
+  stroke-width: 1px;
+  visibility: visible;
+}
+
+
+.gray-hashed-line {
+  stroke: rgb(152, 152, 152);
+  stroke-opacity: 1;
+  stroke-width: 1px;
+  stroke-dasharray: 8, 4;
+  visibility: visible;
+
+}
+
+
+.white-text {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  fill: rgb(255, 255, 255);
+  text-anchor: middle;
+  text-align: center;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  font-family: Arial;
+}
+
+.red-text {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  fill: rgb(241, 107, 107);
+  background-color: rgb(125, 43, 219);
+  text-anchor: middle;
+  text-align: center;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  font-family: Arial;
+  align-content: center;
+}
+
+.green-text {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  fill: rgb(0, 255, 0);
+  background-color: rgb(125, 43, 219);
+  text-anchor: middle;
+  text-align: center;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  font-family: Arial;
+  align-content: center;
+}
+.cyan-text {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  fill: cyan;
+  background-color: rgb(125, 43, 219);
+  text-anchor: middle;
+  text-align: center;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  font-family: Arial;
+  align-content: center;
+}
+
+.white-text {
+  color: white;
+}
+
+.red-text {
+  color: red;
+}
+
+.black-text {
+  color: black;
+}
+
+.green-text {
+  color: green;
+}
+
+button {
+  color: var(--text-primary);
+  background-color: var(--background);
+  border: 2px var(--text-primary) solid;
+  float: right;
+  transition: all .5s;
+}
+
+
+
+
+rect {
+  pointer-events: all;
+  stroke-opacity: 0;
+  z-index: 1;
+}
+
+.listening-rect-button-candle-on {
+  pointer-events: all;
+  stroke-opacity: 0.5;
+  fill: rgb(45, 220, 118);
+  z-index: 100;
+  fill-opacity: 0.4
+}
+
+.listening-rect-button-candle-off {
+  pointer-events: all;
+  stroke-opacity: 0.5;
+  fill: rgb(184, 186, 185);
+  z-index: 100;
+  fill-opacity: 0.4
+}
+
+.listening-rect-button-sma-on {
+  pointer-events: all;
+  stroke-opacity: 0.5;
+  fill: rgb(45, 220, 118);
+  z-index: 100;
+  fill-opacity: 0.4
+}
+
+.listening-rect-button-sma-off {
+  pointer-events: all;
+  stroke-opacity: 0.5;
+  fill: rgb(184, 186, 185);
+  z-index: 100;
+  fill-opacity: 0.4
+}
+
+.listening-rect-button-off {
+  pointer-events: all;
+  stroke-opacity: 0.5;
+  fill: rgb(115, 217, 158);
+  z-index: 100;
+  fill-opacity: 0.4
+}
+
+.listening-rect-button-on {
+  pointer-events: all;
+  stroke-opacity: 0.5;
+  fill: rgb(235, 23, 23);
+  z-index: 100;
+  fill-opacity: 0.4
+}
+
+.listening-rect-time-selection {
+  pointer-events: all;
+  stroke-opacity: 0.5;
+  fill: rgb(115, 217, 158);
+  z-index: 100;
+  fill-opacity: 0.4
+}
+
+.listening-rect {
+  pointer-events: all;
+  stroke-opacity: 0;
+  z-index: 100;
+}
+
+.colored-rect {
+  z-index: -1;
+}
+
+.green-candle {
+  z-index: -1;
+  visibility: visible;        
+  fill:green;
+  stroke:lightgreen;
+  stroke-width:0.5;
+  fill-opacity:1;
+  stroke-opacity:1;
+}
+
+.red-candle {
+  z-index: -1;
+  visibility: visible;        
+  fill:red;
+  stroke:rgb(246, 156, 156);
+  stroke-width:0.5;
+  fill-opacity:1;
+  stroke-opacity:1;
+}
+
+
+.redzone-rect {
+  pointer-events: all;
+  stroke-opacity: 0.5;
+  fill: rgb(255, 114, 114);
+  z-index: 100;
+  fill-opacity: 0.2
+}
+
+.crosshair_date_rect {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  fill: rgb(10, 82, 216);
+  stroke-width: 0px;
+  width: 70px;
+  height: 20px;
+}
+
+.crosshair_date_text {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  fill: yellow;
+  text-anchor: middle;
+  text-align: center;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  font-family: Arial;
+}
+
+.crosshair_price_rect {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  fill: rgb(10, 82, 216);
+  stroke-width: 0px;
+  width: 50px;
+  height: 20px;
+}
+
+.crosshair_price_rect_green {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  fill: rgb(2, 170, 61);
+  stroke-width: 0px;
+  width: 50px;
+  height: 20px;
+}
+
+.crosshair_price_rect_red {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  fill: rgb(212, 59, 59);
+  stroke-width: 0px;
+  width: 50px;
+  height: 20px;
+}
+
+.crosshair_price_rect_blue {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  fill: rgb(59, 133, 212);
+  stroke-width: 0px;
+  width: 50px;
+  height: 20px;
+}
+
+.crosshair_price_text_white {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  fill: rgb(255, 255, 255);
+  text-anchor: middle;
+  text-align: center;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  font-family: Arial;
+}
+
+.crosshair_price_text {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  fill: yellow;
+  text-anchor: middle;
+  text-align: center;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  font-family: Arial;
+}
+
+.test {
+  background-color: rgb(181, 14, 14)248, 248, 248);
+}
+
+.param_text {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  fill: rgb(248, 248, 248);
+  font-size: 13px;
+  font-family: Arial;
+}
+
+.title_text {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  fill: rgb(255, 255, 255);
+  text-anchor: middle;
+  text-align: left;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.title_marge {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  fill: black;
+  text-anchor: left;
+  text-align: left;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.title_marge_red {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  fill: red;
+  text-anchor: left;
+  text-align: left;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.title_marge_green {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  fill: rgb(66, 220, 66);
+  text-anchor: left;
+  text-align: left;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.max_lost_text {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  fill: rgb(255, 255, 255);
+  text-anchor: middle;
+  text-align: center;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  font-family: Arial;
+}
+
+.chart_button_text {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  fill: rgb(255, 255, 255);
+  text-anchor: middle;
+  text-align: center;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  font-family: Arial;
+  align-content: center;
+}
+
+.strategy_text {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  fill: rgb(255, 255, 255);
+  background-color: rgb(125, 43, 219);
+  text-anchor: middle;
+  text-align: center;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  font-family: Arial;
+  align-content: center;
+}
+
+.strategy_text_red {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  fill: rgb(241, 107, 107);
+  background-color: rgb(125, 43, 219);
+  text-anchor: middle;
+  text-align: center;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  font-family: Arial;
+  align-content: center;
+}
+
+.strategy_text_green {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  fill: rgb(0, 255, 0);
+  background-color: rgb(125, 43, 219);
+  text-anchor: middle;
+  text-align: center;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  font-family: Arial;
+  align-content: center;
+}
+
+.strategy_text_cyan {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  fill: rgb(58, 238, 247);
+  background-color: rgb(125, 43, 219);
+  text-anchor: middle;
+  text-align: center;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  font-family: Arial;
+  align-content: center;
+}
+
+.strategy_text_magenta {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  fill: rgb(247, 58, 212);
+  background-color: rgb(125, 43, 219);
+  text-anchor: middle;
+  text-align: center;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  font-family: Arial;
+  align-content: center;
+}
+
+.rect_price {
+  fill-opacity: 1;
+}
+
+.tooltip {
+  position: absolute;
+  padding: 5px;
+  background-color: rgb(11, 40, 65);
+  color: white;
+  border: 0px solid white;
+  border-radius: 0px;
+  display: none;
+  opacity: .75;
+  font-size: 14px;
+}
+
+.tooltip-line {
+  stroke: rgb(152, 152, 152);
+  stroke-opacity: 1;
+  stroke-width: 1px;
+  stroke-dasharray: 5, 5;
+}
