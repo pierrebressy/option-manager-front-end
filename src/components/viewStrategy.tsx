@@ -1,5 +1,4 @@
 // TODO: all contracts: add the value in the left axis of the current contract PL in orange at current price
-// TODO: short and long: remove the VI and days left info
 // TODO: short and long: don't display the right axis
 // TODO: short: set current price @ 45$
 // TODO: long: set current price @ 55$
@@ -425,6 +424,13 @@ const Strategy = (charId: string) => {
   useEffect(() => {
     chart.createChart(theContract, sigma, currentPriceValue);
     chart.drawProfileForDaysLeft(theContract, viATMValue, numDaysValue);
+    chart.drawPLForDaysLeft(
+      theContract,
+      currentPriceValue,
+      viATMValue,
+      numDaysValue,
+    );
+
     if (drawSigmaLines) {
       console.log("chart.createChart", theContract);
       chart.drawAllSigmaLines(theContract, sigma, currentPriceValue);

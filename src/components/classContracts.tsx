@@ -121,6 +121,15 @@ export class OptionContract {
   getPLforPrice(price: number) {
     return 0;
   }
+  getPLforPriceForDaysLeft(
+    price: number,
+    interest_rate: number,
+    iv: number,
+    numDaysValue: number,
+    dividend_yield: number,
+  ) {
+    return 0;
+  }
 }
 
 export class Put extends OptionContract {
@@ -218,6 +227,29 @@ export class Put extends OptionContract {
       .attr("visibility", "visible")
       .attr("d", line as any);
   }
+  getPLforPriceForDaysLeft(
+    price: number,
+    interest_rate: number,
+    iv: number,
+    numDaysValue: number,
+    dividend_yield: number,
+  ) {
+    const o = utils.computeOptionPrice(
+      price,
+      this.getStrike(),
+      interest_rate,
+      iv,
+      dividend_yield,
+      numDaysValue,
+    );
+    let put_data = o[1];
+    let put_price = put_data[0];
+    let p_and_l: number = 0;
+    p_and_l =
+      this.getInitialCost() +
+      this.getQty() * consts.NUM_SHARES_PER_CONTRACT * put_price;
+    return p_and_l;
+  }
   drawProfileForDaysLeft(
     svg: any,
     x: any,
@@ -233,21 +265,32 @@ export class Put extends OptionContract {
 
     let datax: number[] = [];
     let datay: number[] = [];
+    let p_and_l: number = 0;
     for (let price = xmin; price < xmax; price += 0.2) {
-      const o = utils.computeOptionPrice(
-        price,
-        this.getStrike(),
-        interest_rate,
-        iv,
-        dividend_yield,
-        numDaysValue,
-      );
-      let put_data = o[1];
-      let put_price = put_data[0];
-      let p_and_l: number = 0;
-      p_and_l =
-        this.getInitialCost() +
-        this.getQty() * consts.NUM_SHARES_PER_CONTRACT * put_price;
+      if (0) {
+        const o = utils.computeOptionPrice(
+          price,
+          this.getStrike(),
+          interest_rate,
+          iv,
+          dividend_yield,
+          numDaysValue,
+        );
+        let put_data = o[1];
+        let put_price = put_data[0];
+
+        p_and_l =
+          this.getInitialCost() +
+          this.getQty() * consts.NUM_SHARES_PER_CONTRACT * put_price;
+      } else {
+        p_and_l = this.getPLforPriceForDaysLeft(
+          price,
+          interest_rate,
+          iv,
+          numDaysValue,
+          dividend_yield,
+        );
+      }
       datax.push(price);
       datay.push(p_and_l);
     }
@@ -1436,10 +1479,10 @@ export class Short extends OptionContract {
     return this.getPru();
   }
   getMaxLost() {
-    return Number.NEGATIVE_INFINITY
+    return Number.NEGATIVE_INFINITY;
   }
   getMaxProfit() {
-    return this.getBreakEvenValue() * (-this.getQty());
+    return this.getBreakEvenValue() * -this.getQty();
   }
   getYlimits() {
     let ymin = -100;
@@ -1508,7 +1551,7 @@ export class Long extends OptionContract {
     return this.getBreakEvenValue() * this.getQty();
   }
   getMaxProfit() {
-    return Number.POSITIVE_INFINITY
+    return Number.POSITIVE_INFINITY;
   }
   getYlimits() {
     let ymin = -100;

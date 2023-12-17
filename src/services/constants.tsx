@@ -40,7 +40,8 @@ let _strategyDefaultPRU = 100.5;
 //const _strategyDefault: string = "DCS";
 //const _strategyDefault: string = "DPS";
 //const _strategyDefault: string = "Short";
-const _strategyDefault: string = "Covered Call";
+//const _strategyDefault: string = "Covered Call";
+const _strategyDefault: string = "Short Put";
 
 if (_strategyDefault === "CCS") {
   _strategyDefaultNumContracts = 1;

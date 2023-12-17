@@ -77,6 +77,16 @@
   stroke-width: 1px;
   visibility: visible;
 }
+.orange-circle {
+  fill-opacity: 1;
+  fill: rgb(245, 177, 20);
+  stroke-opacity: 1;
+  stroke: rgb(255, 255, 255);
+  stroke-width: 1px;
+  visibility: visible;
+}
+
+
 .green-rectangle {
   fill-opacity: 1;
   fill: rgb(37, 133, 25);
@@ -98,6 +108,14 @@
   fill: rgb(255, 0, 0);
   stroke-opacity: 1;
   stroke: rgb(255, 0, 0);
+  stroke-width: 1px;
+  visibility: visible;
+}
+.orange-rectangle {
+  fill-opacity: 1;
+  fill: rgb(142, 103, 4);
+  stroke-opacity: 1;
+  stroke: rgb(142, 103, 4);
   stroke-width: 1px;
   visibility: visible;
 }

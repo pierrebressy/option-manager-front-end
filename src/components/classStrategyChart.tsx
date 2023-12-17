@@ -525,6 +525,49 @@ export class StrategyChart {
     );
   }
 
+  drawPLForDaysLeft(
+    contract: any,
+    price: number,
+    iv: number,
+    numDaysValue: number,
+  ) {
+    let interest_rate = 0.0;
+    let dividend_yield = 0.0;
+    let p_and_l = contract.getPLforPriceForDaysLeft(
+      price,
+      interest_rate,
+      iv,
+      numDaysValue,
+      dividend_yield,
+    );
+
+    this.svg
+      .append("line")
+      .attr("stroke", "gray")
+      .attr("stroke-width", 0.5)
+      .attr("x1", this.x(price))
+      .attr("y1", this.y(p_and_l))
+      .attr("x2", this.x(this.xmin))
+      .attr("y2", this.y(p_and_l))
+      .attr("stroke-dasharray", "8,1");
+    this.svg
+      .append("rect")
+      .attr("class", "orange-rectangle")
+      .attr("visibility", "visible")
+      .attr("x", this.x(this.xmin) - 50)
+      .attr("y", this.y(p_and_l) - 10)
+      .attr("width", 50)
+      .attr("height", 20);
+    this.drawCircleLeftScale(price, p_and_l, "orange-circle");
+
+    this.svg
+      .append("text")
+      .attr("class", "crosshair_date_text")
+      .attr("x", this.x(this.xmin) - 30)
+      .attr("y", this.y(p_and_l) + 4)
+      .text(p_and_l.toFixed(0).toString());
+  }
+
   drawAllSigmaLines(
     contract: any,
     sigma: number = 0.0,
