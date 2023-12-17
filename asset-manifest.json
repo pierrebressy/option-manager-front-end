@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/option-manager-front-end/static/css/main.9d3bb12f.css",
+    "main.js": "/option-manager-front-end/static/js/main.aeddb38c.js",
+    "static/js/787.9e9f4ffd.chunk.js": "/option-manager-front-end/static/js/787.9e9f4ffd.chunk.js",
+    "index.html": "/option-manager-front-end/index.html",
+    "main.9d3bb12f.css.map": "/option-manager-front-end/static/css/main.9d3bb12f.css.map",
+    "main.aeddb38c.js.map": "/option-manager-front-end/static/js/main.aeddb38c.js.map",
+    "787.9e9f4ffd.chunk.js.map": "/option-manager-front-end/static/js/787.9e9f4ffd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9d3bb12f.css",
+    "static/js/main.aeddb38c.js"
+  ]
+}
