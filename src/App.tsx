@@ -13,7 +13,7 @@ import TickerView from "./components/viewTicker";
 import SectorsView from "./components/viewSectors";
 import Strategy from "./components/viewStrategy";
 
-export default function App() {
+function AppLight() {
   document.title = "Options Manager";
 
   return (
@@ -44,7 +44,7 @@ export default function App() {
   );
 }
 
- function AppFull() {
+export default function App() {
   document.title = "Options Manager";
 
   return (
