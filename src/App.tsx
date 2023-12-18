@@ -13,7 +13,7 @@ import TickerView from "./components/viewTicker";
 import SectorsView from "./components/viewSectors";
 import Strategy from "./components/viewStrategy";
 
-export default function App() {
+function AppLight() {
   document.title = "Options Manager";
 
   return (
@@ -44,17 +44,13 @@ export default function App() {
   );
 }
 
- function AppFull() {
+export default function App() {
   document.title = "Options Manager";
 
   return (
     <div className="App">
       <header className="App-header">
-        <Tabs
-          defaultActiveKey="opened_contracts"
-          id="main-tabs"
-          className="mb-2"
-        >
+        <Tabs defaultActiveKey="strategies" id="main-tabs" className="mb-2">
           <Tab eventKey="pl" title="P&L - Risk">
             {PL_risk()}
           </Tab>

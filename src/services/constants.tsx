@@ -19,7 +19,9 @@ export const NUM_SHARES_PER_CONTRACT = 100;
 export const CONTRACT_MIN_PRICE = 0;
 export const CONTRACT_MAX_PRICE = 1000;
 export const CONTRACT_MIN_PRICE_SIMULATION = -100;
-export const CONTRACT_NUM_POINTS_SIMULATION = 250;
+export const CONTRACT_NUM_POINTS_SIMULATION = 500;
+export const DEFAULT_INTEREST_RATE = 0.015; // 1.5%
+export const DEFAULT_DIVIDEND_YIELD = 0.0; // 0.0%
 export const NUM_TRADE_DAYS = 252;
 export const NUM_DAYS_YEAR = 365;
 

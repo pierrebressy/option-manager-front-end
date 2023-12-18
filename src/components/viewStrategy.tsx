@@ -1,15 +1,4 @@
-// TODO: all contracts: add the value in the left axis of the current contract PL in orange at current price
 // TODO: short and long: don't display the right axis
-// TODO: short: set current price @ 45$
-// TODO: long: set current price @ 55$
-// TODO: short put: set premium @ 4$
-// TODO: short put: set current price @ 48$
-// TODO: long put: set premium @ 4$
-// TODO: long put: set current price @ 44$
-// TODO: short call: set premium @ 4$
-// TODO: short call: set current price @ 52$
-// TODO: long call: set premium @ 4$
-// TODO: long call: set current price @ 56$
 
 import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
@@ -28,6 +17,12 @@ const Strategy = (charId: string) => {
   const [drawSigmaLines, setDrawSigmaLines] = useState(false);
   const [numContractsValue, setNumContracts] = useState(
     consts.DEFAULT_STRATEGY_NUM_CONTRACTS,
+  );
+  const [interestRateValue, setInterestRateValue] = useState(
+    consts.DEFAULT_INTEREST_RATE,
+  );
+  const [dividendYieldValue, setDividendYieldValue] = useState<number>(
+    consts.DEFAULT_DIVIDEND_YIELD,
   );
   const [strikeValue, setStrikeValue] = useState(
     consts.DEFAULT_STRATEGY_STRIKE,
@@ -120,6 +115,15 @@ const Strategy = (charId: string) => {
     //let dataFromClipboard = await pasteFromClipboard();
     //console.log('XXX dataFromClipboard=', dataFromClipboard);
   }
+
+
+    const onDividendYieldChange = (event: any) => {
+      setDividendYieldValue(+event.target.value);
+    };
+    const onInterestRateChange = (event: any) => {
+      setInterestRateValue(+event.target.value);
+    };
+
 
   const onCurrentPriceValueChange = (event: any) => {
     setCurrentPriceValue(+event.target.value);
@@ -744,6 +748,43 @@ const Strategy = (charId: string) => {
             ></Form.Range>
           </Col>
         </Row>
+
+        <Row>
+          <Col xl={3} className="justify-content-md-left test">
+            Interest Rate
+          </Col>
+          <Col xl={2} className="text-sm-end param_text ">
+            {(interestRateValue*100 ).toFixed(1)} %
+          </Col>
+          <Col xl={2} className="justify-content-md-left">
+            <Form.Range
+              min={0}
+              max={1}
+              step={0.001}
+              value={interestRateValue}
+              onChange={onInterestRateChange}
+            ></Form.Range>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col xl={3} className="justify-content-md-left test">
+            Dividen Yield
+          </Col>
+          <Col xl={2} className="text-sm-end param_text ">
+            {(dividendYieldValue*100).toFixed(1)} %
+          </Col>
+          <Col xl={2} className="justify-content-md-left">
+            <Form.Range
+              min={0}
+              max={1}
+              step={0.001}
+              value={dividendYieldValue}
+              onChange={onDividendYieldChange}
+            ></Form.Range>
+          </Col>
+        </Row>
+
         <Row>
           <Col xl={3} className="justify-content-md-left">
             <Form>
@@ -782,33 +823,177 @@ const Strategy = (charId: string) => {
             ></Form.Range>
           </Col>
         </Row>
-
+        {selectedContractType === "Short Put" ||
+        selectedContractType === "Long Put" ||
+        selectedContractType === "Short Call" ||
+        selectedContractType === "Long Call" ? (
+          <div>
+            <Row>
+              <Col xl={3} className="justify-content-md-left">
+                GREEKS
+              </Col>
+            </Row>
+            <Row>
+              <Col xl={1} className="justify-content-md-left">
+                &nbsp;
+              </Col>
+              <Col xl={1} className="justify-content-md-left">
+                <a href="javascript:alert('price of the option.');">OPTIONS</a>
+              </Col>
+              <Col xl={3} className="justify-content-md-right">
+                Price ={" "}
+                {theContract
+                  .getPrice(
+                    currentPriceValue,
+                    interestRateValue,
+                    viATMValue,
+                    numDaysValue,
+                    dividendYieldValue
+                  )
+                  .toFixed(3)}{" "}
+                $
+              </Col>
+            </Row>
+            <Row>
+              <Col xl={1} className="justify-content-md-left">
+                &nbsp;
+              </Col>
+              <Col xl={1} className="justify-content-md-left">
+                <a href="javascript:alert('Delta is the rate of change on the option’s price with respect to changes in the price of the underlying asset.');">
+                  DELTA
+                </a>
+              </Col>
+              <Col xl={3} className="justify-content-md-right">
+                Δ ={" "}
+                {theContract
+                  .getDelta(
+                    currentPriceValue,
+                    interestRateValue,
+                    viATMValue,
+                    numDaysValue,
+                    dividendYieldValue
+                  )
+                  .toFixed(3)}{" "}
+                $ / $
+              </Col>
+            </Row>
+            <Row>
+              <Col xl={1} className="justify-content-md-left">
+                &nbsp;
+              </Col>
+              <Col xl={1} className="justify-content-md-left">
+                <a href="javascript:alert('Gamma is the rate of change of the option’s Delta with respect to changes in the underlying stock.');">
+                  GAMMA
+                </a>
+              </Col>
+              <Col xl={3} className="justify-content-md-right">
+                Γ ={" "}
+                {theContract
+                  .getGamma(
+                    currentPriceValue,
+                    interestRateValue,
+                    viATMValue,
+                    numDaysValue,
+                    dividendYieldValue
+                  )
+                  .toFixed(3)}
+              </Col>
+            </Row>
+            <Row>
+              <Col xl={1} className="justify-content-md-left">
+                &nbsp;
+              </Col>
+              <Col xl={1} className="justify-content-md-left">
+                <a href="javascript:alert('Theta is the rate of change of the option premium with respect to time.');">
+                  THETA
+                </a>
+              </Col>
+              <Col xl={3} className="justify-content-md-right">
+                Θ ={" "}
+                {theContract
+                  .getTheta(
+                    currentPriceValue,
+                    interestRateValue,
+                    viATMValue,
+                    numDaysValue,
+                    dividendYieldValue
+                  )
+                  .toFixed(3)}{" "}
+                $ / day
+              </Col>
+            </Row>
+            <Row>
+              <Col xl={1} className="justify-content-md-left">
+                &nbsp;
+              </Col>
+              <Col xl={1} className="justify-content-md-left">
+                <a href="javascript:alert('Rho is the rate of change of the option premium with respect to the risk-free rate.');">
+                  RHO
+                </a>
+              </Col>
+              <Col xl={3} className="justify-content-md-right">
+                ρ ={" "}
+                {theContract
+                  .getRho(
+                    currentPriceValue,
+                    interestRateValue,
+                    viATMValue,
+                    numDaysValue,
+                    dividendYieldValue
+                  )
+                  .toFixed(3)}
+              </Col>
+            </Row>
+            <Row>
+              <Col xl={1} className="justify-content-md-left">
+                &nbsp;
+              </Col>
+              <Col xl={1} className="justify-content-md-left">
+                <a href="javascript:alert('Vega is the rate of change of the option premium with respect to the volatility of the underlying asset.');">
+                  VEGA
+                </a>
+              </Col>
+              <Col xl={3} className="justify-content-md-right">
+                V ={" "}
+                {theContract
+                  .getVega(
+                    currentPriceValue,
+                    interestRateValue,
+                    viATMValue,
+                    numDaysValue,
+                    dividendYieldValue
+                  )
+                  .toFixed(3)}
+              </Col>
+            </Row>
+          </div>
+        ) : (
+          <div></div>
+        )}
         {selectedContractType !== "Covered Call" &&
         selectedContractType !== "Short" &&
         selectedContractType !== "Long" ? (
-          <Row>
-            <Col xl={3} className="justify-content-md-left">
-              &nbsp;
-            </Col>
-          </Row>
+          <div></div>
         ) : (
-          <Row>
-            <Col xl={3} className="justify-content-md-left">
-              PRU
-            </Col>
-            <Col xl={2} className="text-sm-end param_text">
-              {pruValue} USD
-            </Col>
-            <Col xl={2} className="justify-content-md-left">
-              <Form.Range
-                min={2}
-                max={200}
-                step={0.1}
-                value={pruValue}
-                onChange={onPruChange}
-              ></Form.Range>
-            </Col>
-          </Row>
+          <div>
+            <Row>
+              <Col xl={3} className="justify-content-md-left">
+                PRU
+              </Col>
+              <Col xl={2} className="text-sm-end param_text">
+                {pruValue} USD
+              </Col>
+              <Col xl={2} className="justify-content-md-left">
+                <Form.Range
+                  min={2}
+                  max={200}
+                  step={0.1}
+                  value={pruValue}
+                  onChange={onPruChange}
+                ></Form.Range>
+              </Col>
+            </Row>
+          </div>
         )}
 
         {contract.getLegs() === 0 ? (

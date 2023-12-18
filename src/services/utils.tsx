@@ -62,7 +62,7 @@ export function computeOptionPrice(
   const D = interest_rate;
   const E = dividend_yield;
   const G = num_days_left / consts.NUM_DAYS_YEAR;
-  //const F = G * consts.NUM_TRADE_DAYS
+  const F = G * consts.NUM_TRADE_DAYS
   const H = Math.log(A / B);
   const I = G * (D - E + (C * C) / 2);
   const J = Math.max(1e-10, C * Math.sqrt(G));
@@ -76,7 +76,28 @@ export function computeOptionPrice(
   const R = B * Q;
   const S = Math.exp(-E * G);
   const T = A * S;
-
+/*
+  console.log("A=", A);
+  console.log("B=", B);
+  console.log("C=", C);
+  console.log("D=", D);
+  console.log("E=", E);
+  console.log("F=", F);
+  console.log("G=", G);
+  console.log("H=", H);
+  console.log("I=", I);
+  console.log("J=", J);
+  console.log("K=", K);
+  console.log("L=", L);
+  console.log("M=", M);
+  console.log("N=", N);
+  console.log("O=", O);
+  console.log("P=", P);
+  console.log("Q=", Q);
+  console.log("R=", R);
+  console.log("S=", S);
+  console.log("T=", T);
+*/
   // CALL
   const call_price = T * M - R * O;
   const call_delta = M * S;

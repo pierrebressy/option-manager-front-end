@@ -130,6 +130,60 @@ export class OptionContract {
   ) {
     return 0;
   }
+  getPrice(
+    price: number,
+    interest_rate: number,
+    iv: number,
+    numDaysValue: number,
+    dividend_yield: number,
+  ) {
+    return 0;
+  }
+  getDelta(
+    price: number,
+    interest_rate: number,
+    iv: number,
+    numDaysValue: number,
+    dividend_yield: number,
+  ) {
+    return 0;
+  }
+  getGamma(
+    price: number,
+    interest_rate: number,
+    iv: number,
+    numDaysValue: number,
+    dividend_yield: number,
+  ) {
+    return 0;
+  }
+  getTheta(
+    price: number,
+    interest_rate: number,
+    iv: number,
+    numDaysValue: number,
+    dividend_yield: number,
+  ) {
+    return 0;
+  }
+  getRho(
+    price: number,
+    interest_rate: number,
+    iv: number,
+    numDaysValue: number,
+    dividend_yield: number,
+  ) {
+    return 0;
+  }
+  getVega(
+    price: number,
+    interest_rate: number,
+    iv: number,
+    numDaysValue: number,
+    dividend_yield: number,
+  ) {
+    return 0;
+  }
 }
 
 export class Put extends OptionContract {
@@ -226,6 +280,17 @@ export class Put extends OptionContract {
       .attr("clip-path", "url(#" + clipPath + ")")
       .attr("visibility", "visible")
       .attr("d", line as any);
+    
+    
+
+    
+    for (let days = 30; days >= 0; days -= 1) {
+      let option_price = this.getPLforPriceForDaysLeft(50, 0, 0.17, days, 0);
+      let option_theta = 100*(this.getTheta(50, 0, 0.17, days, 0));
+      console.log(days, option_price.toFixed(2), option_theta.toFixed(2));
+    }
+    
+    
   }
   getPLforPriceForDaysLeft(
     price: number,
@@ -250,6 +315,122 @@ export class Put extends OptionContract {
       this.getQty() * consts.NUM_SHARES_PER_CONTRACT * put_price;
     return p_and_l;
   }
+  getPrice(
+    price: number,
+    interest_rate: number,
+    iv: number,
+    numDaysValue: number,
+    dividend_yield: number,
+  ) {
+    const o = utils.computeOptionPrice(
+      price,
+      this.getStrike(),
+      interest_rate,
+      iv,
+      dividend_yield,
+      numDaysValue,
+    );
+    let put_data = o[1];
+    let put_price = put_data[0];
+    return put_price;
+  }
+
+  getDelta(
+    price: number,
+    interest_rate: number,
+    iv: number,
+    numDaysValue: number,
+    dividend_yield: number,
+  ) {
+    const o = utils.computeOptionPrice(
+      price,
+      this.getStrike(),
+      interest_rate,
+      iv,
+      dividend_yield,
+      numDaysValue,
+    );
+    let put_data = o[1];
+    let put_delta = put_data[1];
+    return put_delta;
+  }
+  getGamma(
+    price: number,
+    interest_rate: number,
+    iv: number,
+    numDaysValue: number,
+    dividend_yield: number,
+  ) {
+    const o = utils.computeOptionPrice(
+      price,
+      this.getStrike(),
+      interest_rate,
+      iv,
+      dividend_yield,
+      numDaysValue,
+    );
+    let put_data = o[1];
+    let put_gamma = put_data[2];
+    return put_gamma;
+  }
+  getTheta(
+    price: number,
+    interest_rate: number,
+    iv: number,
+    numDaysValue: number,
+    dividend_yield: number,
+  ) {
+    const o = utils.computeOptionPrice(
+      price,
+      this.getStrike(),
+      interest_rate,
+      iv,
+      dividend_yield,
+      numDaysValue,
+    );
+    let put_data = o[1];
+    let put_theta = put_data[3];
+    return put_theta;
+  }
+  getRho(
+    price: number,
+    interest_rate: number,
+    iv: number,
+    numDaysValue: number,
+    dividend_yield: number,
+  ) {
+    const o = utils.computeOptionPrice(
+      price,
+      this.getStrike(),
+      interest_rate,
+      iv,
+      dividend_yield,
+      numDaysValue,
+    );
+    let put_data = o[1];
+    let put_rho = put_data[4];
+    return put_rho;
+  }
+  getVega(
+    price: number,
+    interest_rate: number,
+    iv: number,
+    numDaysValue: number,
+    dividend_yield: number,
+  ) {
+    const o = utils.computeOptionPrice(
+      price,
+      this.getStrike(),
+      interest_rate,
+      iv,
+      dividend_yield,
+      numDaysValue,
+    );
+    let put_data = o[1];
+    let put_vega = put_data[5];
+    return put_vega;
+  }
+
   drawProfileForDaysLeft(
     svg: any,
     x: any,
@@ -411,6 +592,127 @@ export class Call extends OptionContract {
       .attr("visibility", "visible")
       .attr("d", line as any);
   }
+  getPLforPriceForDaysLeft(
+    price: number,
+    interest_rate: number,
+    iv: number,
+    numDaysValue: number,
+    dividend_yield: number,
+  ) {
+    const o = utils.computeOptionPrice(
+      price,
+      this.getStrike(),
+      interest_rate,
+      iv,
+      dividend_yield,
+      numDaysValue,
+    );
+
+    let call_data = o[0];
+    let call_price = call_data[0];
+    let p_and_l: number = 0;
+    p_and_l =
+      this.getInitialCost() +
+      this.getQty() * consts.NUM_SHARES_PER_CONTRACT * call_price;
+
+    return p_and_l;
+  }
+  getDelta(
+    price: number,
+    interest_rate: number,
+    iv: number,
+    numDaysValue: number,
+    dividend_yield: number,
+  ) {
+    const o = utils.computeOptionPrice(
+      price,
+      this.getStrike(),
+      interest_rate,
+      iv,
+      dividend_yield,
+      numDaysValue,
+    );
+    let call_data = o[0];
+    let call_delta = call_data[1];
+    return call_delta;
+  }
+  getGamma(
+    price: number,
+    interest_rate: number,
+    iv: number,
+    numDaysValue: number,
+    dividend_yield: number,
+  ) {
+    const o = utils.computeOptionPrice(
+      price,
+      this.getStrike(),
+      interest_rate,
+      iv,
+      dividend_yield,
+      numDaysValue,
+    );
+    let call_data = o[0];
+    let call_gamma = call_data[2];
+    return call_gamma;
+  }
+  getTheta(
+    price: number,
+    interest_rate: number,
+    iv: number,
+    numDaysValue: number,
+    dividend_yield: number,
+  ) {
+    const o = utils.computeOptionPrice(
+      price,
+      this.getStrike(),
+      interest_rate,
+      iv,
+      dividend_yield,
+      numDaysValue,
+    );
+    let call_data = o[0];
+    let put_theta = call_data[3];
+    return put_theta;
+  }
+  getRho(
+    price: number,
+    interest_rate: number,
+    iv: number,
+    numDaysValue: number,
+    dividend_yield: number,
+  ) {
+    const o = utils.computeOptionPrice(
+      price,
+      this.getStrike(),
+      interest_rate,
+      iv,
+      dividend_yield,
+      numDaysValue,
+    );
+    let call_data = o[0];
+    let call_rho = call_data[4];
+    return call_rho;
+  }
+  getVega(
+    price: number,
+    interest_rate: number,
+    iv: number,
+    numDaysValue: number,
+    dividend_yield: number,
+  ) {
+    const o = utils.computeOptionPrice(
+      price,
+      this.getStrike(),
+      interest_rate,
+      iv,
+      dividend_yield,
+      numDaysValue,
+    );
+    let call_data = o[0];
+    let call_vega = call_data[5];
+    return call_vega;
+  }
+
   drawProfileForDaysLeft(
     svg: any,
     x: any,
