@@ -107,7 +107,7 @@ if (_strategyDefault === "CCS") {
   _strategyDefaultPRU = 50.0;
 } else {
   _strategyDefaultNumContracts = 1;
-  _strategyDefaultStrike = 50.0;
+  _strategyDefaultStrike = 49.0;
   _strategyDefaultStrike1 = 50.0;
   _strategyDefaultStrike2 = 50.0;
   _strategyDefaultPremium = 0.7;

@@ -207,7 +207,6 @@ export class SectorChart {
       .attr("id", "yAxis" + this.id)
       .attr("transform", `translate(${this.width},0)`)
       .call(this.yAxis);
-    console.log("yAxis: ", "yAxis" + this.id);
 
     this.clipPath = uuidv4();
     //        this.clipPath="clip" + this.id
@@ -288,15 +287,7 @@ export class SectorChart {
     tl.drawLine(this.svg, line, this.displayMode);
     tl.createRectangles(this.svg);
 
-    console.log(
-      ">>> addTickerLine1 : this.tickerLines",
-      this.tickerLines.length,
-    );
     this.tickerLines.push(tl);
-    console.log(
-      ">>> addTickerLine2 : this.tickerLines",
-      this.tickerLines.length,
-    );
 
     let yAxis = d3.axisRight(this.y).tickFormat((d) => {
       return `${(+d).valueOf().toFixed(2)}`;

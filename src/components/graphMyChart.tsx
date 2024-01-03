@@ -8,7 +8,11 @@ import {
 } from "../interfaces/datatypes";
 import { I2DPoint, I2DSize } from "../interfaces/datatypes";
 import * as utils from "../services/utils";
-import * as option from "./classContracts";
+import { CoveredCall } from "./classContractsCoveredCall";
+import { CreditCallSpread } from "./classContractsCCS";
+import { Call } from "./classContractsCall";
+import { Put } from "./classContractsPut";
+
 import * as graphic from "./graphGraphicElement";
 import * as consts from "../services/constants";
 
@@ -202,7 +206,6 @@ export class MyChart {
       .attr("id", "yAxis" + this.id)
       .attr("transform", `translate(${this.width},0)`)
       .call(this.yAxis);
-    console.log("yAxis: ", "yAxis" + this.id);
 
     this.clipPath = uuidv4();
     this.svg
@@ -402,7 +405,6 @@ export class MyChart {
       );
       return;
     }
-    console.log(">> drawChart::openingIndex=", openingIndex);
 
     if (contract.closedBy !== "") {
       // compute index of closing price at contract opening
@@ -895,7 +897,7 @@ export class MyChart {
     }
   }
 
-  drawCoveredCall(c: option.CoveredCall) {
+  drawCoveredCall(c: CoveredCall) {
     this.ge.push(
       new graphic.GraphicElementVLine(this.svg, this.x, this.y, [
         c.getOpenBy(),
@@ -945,7 +947,7 @@ export class MyChart {
     this.setXDomain(this.currentLimitInfDisplayDate, c.getExpiration());
   }
 
-  drawLongPut(c: option.Put) {
+  drawLongPut(c: Put) {
     this.ge.push(
       new graphic.GraphicElementVLine(this.svg, this.x, this.y, [
         c.getOpenBy(),
@@ -995,7 +997,10 @@ export class MyChart {
     this.setXDomain(this.currentLimitInfDisplayDate, c.getExpiration());
   }
 
-  drawShortPut(c: option.Put) {
+  drawShortPut(c: Put) {
+    let PL = c.getPLforPrice(this.close[this.close.length - 1].close);
+    console.log("=> Price=", this.close[this.close.length - 1].close);
+    console.log("=> PL=", PL);
     this.ge.push(
       new graphic.GraphicElementVLine(this.svg, this.x, this.y, [
         c.getOpenBy(),
@@ -1045,7 +1050,7 @@ export class MyChart {
     this.setXDomain(this.currentLimitInfDisplayDate, c.getExpiration());
   }
 
-  drawLongCall(c: option.Call) {
+  drawLongCall(c: Call) {
     this.ge.push(
       new graphic.GraphicElementVLine(this.svg, this.x, this.y, [
         c.getOpenBy(),
@@ -1066,12 +1071,6 @@ export class MyChart {
         this.height,
       ]),
     );
-
-    console.log("graphMyChart::drawLongCall");
-    console.log("   c.getOpenBy()=", c.getOpenBy());
-    console.log("   this.ymaximum=", this.yMaximum);
-    console.log("   c.getContractEndDate()=", c.getContractEndDate());
-    console.log("   c.getStrike()=", c.getStrike());
 
     this.ge.push(
       new graphic.GraphicElementRectangle(this.svg, this.x, this.y, [
@@ -1101,7 +1100,7 @@ export class MyChart {
     this.setXDomain(this.currentLimitInfDisplayDate, c.getExpiration());
   }
 
-  drawCCS(c: option.CreditCallSpread) {
+  drawCCS(c: CreditCallSpread) {
     this.ge.push(
       new graphic.GraphicElementVLine(this.svg, this.x, this.y, [
         c.getOpenBy(),
@@ -1165,31 +1164,30 @@ export class MyChart {
   }
 
   addContractsToDisplay(contracts: IContractRow[]) {
-    console.log("#### addContractsToDisplay");
     let title: string = "No title";
 
     if (contracts && contracts[0].type === "Covered Call") {
-      let c = new option.CoveredCall([contracts[0]] as IContractRow[]);
+      let c = new CoveredCall([contracts[0]] as IContractRow[]);
       title = c.getTitle();
       this.drawCoveredCall(c);
       this.currentLimitSupDisplayDate = c.getExpiration();
     } else if (contracts && contracts[0].type === "Long Put") {
-      let c = new option.Put([contracts[0]] as IContractRow[]);
+      let c = new Put([contracts[0]] as IContractRow[]);
       title = c.getTitle();
       this.drawLongPut(c);
       this.currentLimitSupDisplayDate = c.getExpiration();
     } else if (contracts && contracts[0].type === "Short Put") {
-      let c = new option.Put([contracts[0]] as IContractRow[]);
+      let c = new Put([contracts[0]] as IContractRow[]);
       title = c.getTitle();
       this.drawShortPut(c);
       this.currentLimitSupDisplayDate = c.getExpiration();
     } else if (contracts && contracts[0].type === "Long Call") {
-      let c = new option.Call([contracts[0]] as IContractRow[]);
+      let c = new Call([contracts[0]] as IContractRow[]);
       title = c.getTitle();
       this.drawLongCall(c);
       this.currentLimitSupDisplayDate = c.getExpiration();
     } else if (contracts && contracts[0].type === "Credit Call Spread") {
-      let c = new option.CreditCallSpread(contracts);
+      let c = new CreditCallSpread(contracts);
       title = c.getTitle();
       this.drawCCS(c);
       this.currentLimitSupDisplayDate = c.getExpiration();
@@ -1240,7 +1238,6 @@ export class MyChart {
       .attr("id", "yAxis" + this.id)
       .attr("transform", `translate(${this.width},0)`)
       .call(yAxis);
-    console.log("yAxis: ", "yAxis" + this.id);
 
     this.clipPath = uuidv4();
     svg
@@ -1618,12 +1615,8 @@ export class MyChart {
       .attr("width", 40)
       .attr("height", 20)
       .on("mousedown", (event: MouseEvent) => {
-        console.log("X domain", this.x.domain());
-        console.log("Y domain", this.y.domain());
         let yMin = d3.min(this.close, (d) => +d.close) as number;
-        console.log("yMin", yMin);
         let yMax = d3.max(this.close, (d) => +d.close) as number;
-        console.log("yMax", yMax);
 
         let minDateIndex = utils.findIndexByDate(
           this.currentLimitInfDisplayDate,
@@ -1633,8 +1626,6 @@ export class MyChart {
           this.currentLimitSupDisplayDate,
           this.close,
         );
-        console.log("minDateIndex=", minDateIndex);
-        console.log("maxDateIndex=", maxDateIndex);
         yMin = d3.min(
           this.close.slice(minDateIndex, maxDateIndex),
           (d) => +d.close,
@@ -1643,8 +1634,6 @@ export class MyChart {
           this.close.slice(minDateIndex, maxDateIndex),
           (d) => +d.close,
         ) as number;
-        console.log("yMin", yMin);
-        console.log("yMax", yMax);
         yMin = yMin * 0.9;
         yMax = yMax * 1.1;
         //this.y.domain([yMin, yMax ])

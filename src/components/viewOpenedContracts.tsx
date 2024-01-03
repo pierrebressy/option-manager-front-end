@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import OptionsListComponent from "./classOptionsListComponent";
-import apiOpenedContracts, {
-  columnsOpenedContracts,
-} from "../services/api_opened_contracts";
-import apiTickerPrices from "../services/api_ticker_prices";
+
+import * as api from "../services/backendApi";
+import { columnsOpenedContracts } from "../services/backendApi";
+
 import * as Mychart from "./graphMyChart";
 import * as utils from "../services/utils";
 import {
@@ -54,7 +54,7 @@ function OpenedContracts(charId: string) {
 
   useEffect(() => {
     !isOpenedContractsMounted &&
-      apiOpenedContracts.getContractsList().then((json) => {
+      api.getOpenedContractsList().then((json: any) => {
         setIsOpenedContractsMounted(true);
         setOpenedContracts(json);
         opened_contracts_table.length = 0;
@@ -71,7 +71,7 @@ function OpenedContracts(charId: string) {
   // load ticker prices from database
   useEffect(() => {
     !isTickerPricesMounted &&
-      apiTickerPrices.getTickerPrices(ticker).then((json) => {
+      api.getTickerPrices(ticker).then((json) => {
         setTickerPrices(json);
         setIsTickerPricesMounted(true);
       });

@@ -10,9 +10,21 @@ import { IContractRow } from "../interfaces/datatypes";
 import * as Contract from "./classContracts";
 import * as consts from "../services/constants";
 import { StrategyChart } from "./classStrategyChart";
+import { OptionValueChart } from "./classOptionValueChart";
+import { CoveredCall } from "./classContractsCoveredCall";
+import { CreditCallSpread } from "./classContractsCCS";
+import { DebitCallSpread } from "./classContractsDCS";
+import { CreditPutSpread } from "./classContractsCPS";
+import { DebitPutSpread } from "./classContractsDPS";
+import { Long } from "./classContractsLong";
+import { Short } from "./classContractsShort";
+import { Call } from "./classContractsCall";
+import { Put } from "./classContractsPut";
 
-const Strategy = (charId: string) => {
-  const [chart] = useState(new StrategyChart(charId));
+
+const Strategy = (plChartId: string, optionValueChartId: string) => {
+  const [optionValueChart] = useState(new OptionValueChart(optionValueChartId));
+  const [plChart] = useState(new StrategyChart(plChartId));
   const [loadDefault, setLoadDefault] = useState(true);
   const [drawSigmaLines, setDrawSigmaLines] = useState(false);
   const [numContractsValue, setNumContracts] = useState(
@@ -107,23 +119,17 @@ const Strategy = (charId: string) => {
   }, [strikeValue, viATMValue, numDaysValue]);
 
   function onDrawSigmaLinesChange(event: any) {
-    console.log(
-      "onDrawSigmaLinesChange::event.target.checked=",
-      event.target.checked,
-    );
     setDrawSigmaLines(event.target.checked);
     //let dataFromClipboard = await pasteFromClipboard();
     //console.log('XXX dataFromClipboard=', dataFromClipboard);
   }
 
-
-    const onDividendYieldChange = (event: any) => {
-      setDividendYieldValue(+event.target.value);
-    };
-    const onInterestRateChange = (event: any) => {
-      setInterestRateValue(+event.target.value);
-    };
-
+  const onDividendYieldChange = (event: any) => {
+    setDividendYieldValue(+event.target.value);
+  };
+  const onInterestRateChange = (event: any) => {
+    setInterestRateValue(+event.target.value);
+  };
 
   const onCurrentPriceValueChange = (event: any) => {
     setCurrentPriceValue(+event.target.value);
@@ -184,15 +190,15 @@ const Strategy = (charId: string) => {
     if (selectedContractType === "Short") {
       contractData.type = "Short";
       contractData.qty = -numContractsValue;
-      contract = new Contract.Short([contractData] as IContractRow[]);
+      contract = new Short([contractData] as IContractRow[]);
     } else if (selectedContractType === "Long") {
       contractData.type = "Long";
       contractData.qty = -numContractsValue;
-      contract = new Contract.Long([contractData] as IContractRow[]);
+      contract = new Long([contractData] as IContractRow[]);
     } else if (selectedContractType === "Covered Call") {
       contractData.type = "Covered Call";
       contractData.qty = -numContractsValue;
-      contract = new Contract.CoveredCall([contractData] as IContractRow[]);
+      contract = new CoveredCall([contractData] as IContractRow[]);
       contract.setPru(pruValue);
       setPruValue(contract.getPru());
       if (loadDefault) {
@@ -205,7 +211,7 @@ const Strategy = (charId: string) => {
     } else if (selectedContractType === "Short Put") {
       contractData.type = "Put";
       contractData.qty = -numContractsValue;
-      contract = new Contract.Put([contractData] as IContractRow[]);
+      contract = new Put([contractData] as IContractRow[]);
       if (loadDefault) {
         contract.loadDefaultValues();
         setLoadDefault(false);
@@ -215,7 +221,7 @@ const Strategy = (charId: string) => {
     } else if (selectedContractType === "Long Put") {
       contractData.type = "Put";
       contractData.qty = numContractsValue;
-      contract = new Contract.Put([contractData] as IContractRow[]);
+      contract = new Put([contractData] as IContractRow[]);
       if (loadDefault) {
         contract.loadDefaultValues();
         setLoadDefault(false);
@@ -225,7 +231,7 @@ const Strategy = (charId: string) => {
     } else if (selectedContractType === "Long Call") {
       contractData.type = "Call";
       contractData.qty = numContractsValue;
-      contract = new Contract.Call([contractData] as IContractRow[]);
+      contract = new Call([contractData] as IContractRow[]);
       if (loadDefault) {
         contract.loadDefaultValues();
         setLoadDefault(false);
@@ -235,7 +241,7 @@ const Strategy = (charId: string) => {
     } else if (selectedContractType === "Short Call") {
       contractData.type = "Call";
       contractData.qty = -numContractsValue;
-      contract = new Contract.Call([contractData] as IContractRow[]);
+      contract = new Call([contractData] as IContractRow[]);
       if (loadDefault) {
         contract.loadDefaultValues();
         setLoadDefault(false);
@@ -271,7 +277,7 @@ const Strategy = (charId: string) => {
       ];
       contractData.type = "CCS";
       contractData.qty = -numContractsValue;
-      contract = new Contract.CreditCallSpread(contractsData);
+      contract = new CreditCallSpread(contractsData);
       if (loadDefault) {
         contract.loadDefaultValues();
         setLoadDefault(false);
@@ -309,7 +315,7 @@ const Strategy = (charId: string) => {
       ];
       contractData.type = "DCS";
       contractData.qty = -numContractsValue;
-      contract = new Contract.DebitCallSpread(contractsData);
+      contract = new DebitCallSpread(contractsData);
       if (loadDefault) {
         contract.loadDefaultValues();
         setLoadDefault(false);
@@ -347,7 +353,7 @@ const Strategy = (charId: string) => {
       ];
       contractData.type = "CPS";
       contractData.qty = -numContractsValue;
-      contract = new Contract.CreditPutSpread(contractsData);
+      contract = new CreditPutSpread(contractsData);
       if (loadDefault) {
         contract.loadDefaultValues();
         setLoadDefault(false);
@@ -385,7 +391,7 @@ const Strategy = (charId: string) => {
       ];
       contractData.type = "DPS";
       contractData.qty = -numContractsValue;
-      contract = new Contract.DebitPutSpread(contractsData);
+      contract = new DebitPutSpread(contractsData);
       if (loadDefault) {
         contract.loadDefaultValues();
         setLoadDefault(false);
@@ -422,13 +428,17 @@ const Strategy = (charId: string) => {
     currentPriceValue,
     pruValue,
     drawSigmaLines,
+    interestRateValue,
+    dividendYieldValue,
     theContract.type,
   ]);
 
   useEffect(() => {
-    chart.createChart(theContract, sigma, currentPriceValue);
-    chart.drawProfileForDaysLeft(theContract, viATMValue, numDaysValue);
-    chart.drawPLForDaysLeft(
+    optionValueChart.createChart(theContract, sigma, currentPriceValue, numDaysValue);
+    optionValueChart.drawTheta(currentPriceValue, interestRateValue, viATMValue, numDaysValue, dividendYieldValue);
+    plChart.createChart(theContract, sigma, currentPriceValue);
+    plChart.drawProfileForDaysLeft(theContract, viATMValue, numDaysValue);
+    plChart.drawPLForDaysLeft(
       theContract,
       currentPriceValue,
       viATMValue,
@@ -436,17 +446,19 @@ const Strategy = (charId: string) => {
     );
 
     if (drawSigmaLines) {
-      console.log("chart.createChart", theContract);
-      chart.drawAllSigmaLines(theContract, sigma, currentPriceValue);
+      plChart.drawAllSigmaLines(theContract, sigma, currentPriceValue);
     }
   }, [
     theContract,
-    chart,
+    plChart,
     sigma,
     currentPriceValue,
     drawSigmaLines,
     viATMValue,
     numDaysValue,
+    dividendYieldValue,
+    interestRateValue,
+    optionValueChart
   ]);
 
   const displayShareContractTypes = () => {
@@ -473,7 +485,33 @@ const Strategy = (charId: string) => {
       </Row>
     );
   };
-  const displayOneLegOptionContractTypes = () => {
+  const displayOneLegOptionContractTypes = (theContract:any) => {
+    let monneyIndicator = "";
+    if (
+      selectedContractType === "Short Put" ||
+      selectedContractType === "Long Put"
+    ) {
+      if (theContract.isATM(currentPriceValue)) {
+        monneyIndicator = "ATM";
+      } else if (theContract.isITM(currentPriceValue)) {
+        monneyIndicator = "ITM";
+      } else if (theContract.isOTM(currentPriceValue)) {
+        monneyIndicator = "OTM";
+      }
+    }
+    if (
+      selectedContractType === "Short Call" ||
+      selectedContractType === "Long Call" ||
+      selectedContractType === "Covered Call"
+    ) {
+      if (theContract.isATM(currentPriceValue)) {
+        monneyIndicator = "ATM";
+      } else if (theContract.isITM(currentPriceValue)) {
+        monneyIndicator = "ITM";
+      } else if (theContract.isOTM(currentPriceValue)) {
+        monneyIndicator = "OTM";
+      }
+    }
     return (
       <Row>
         <Col xl={3} className="justify-content-md-left">
@@ -499,6 +537,9 @@ const Strategy = (charId: string) => {
               />
             ))}
           </Form>
+        </Col>
+        <Col xl={1} className="justify-content-md-left">
+          <p className={monneyIndicator}>{monneyIndicator}</p>
         </Col>
       </Row>
     );
@@ -754,7 +795,7 @@ const Strategy = (charId: string) => {
             Interest Rate
           </Col>
           <Col xl={2} className="text-sm-end param_text ">
-            {(interestRateValue*100 ).toFixed(1)} %
+            {(interestRateValue * 100).toFixed(1)} %
           </Col>
           <Col xl={2} className="justify-content-md-left">
             <Form.Range
@@ -769,10 +810,10 @@ const Strategy = (charId: string) => {
 
         <Row>
           <Col xl={3} className="justify-content-md-left test">
-            Dividen Yield
+            Dividend Yield
           </Col>
           <Col xl={2} className="text-sm-end param_text ">
-            {(dividendYieldValue*100).toFixed(1)} %
+            {(dividendYieldValue * 100).toFixed(1)} %
           </Col>
           <Col xl={2} className="justify-content-md-left">
             <Form.Range
@@ -808,7 +849,7 @@ const Strategy = (charId: string) => {
       <div>
         <Row>
           <Col xl={3} className="justify-content-md-left">
-            Current price
+            Underlying current price
           </Col>
           <Col xl={2} className="text-sm-end param_text">
             {currentPriceValue} USD
@@ -833,12 +874,13 @@ const Strategy = (charId: string) => {
                 GREEKS
               </Col>
             </Row>
+
             <Row>
               <Col xl={1} className="justify-content-md-left">
                 &nbsp;
               </Col>
-              <Col xl={1} className="justify-content-md-left">
-                <a href="javascript:alert('price of the option.');">OPTIONS</a>
+              <Col xl={2} className="justify-content-md-left">
+                <a href="javascript:alert('price of the option.');">Options</a>
               </Col>
               <Col xl={3} className="justify-content-md-right">
                 Price ={" "}
@@ -848,17 +890,81 @@ const Strategy = (charId: string) => {
                     interestRateValue,
                     viATMValue,
                     numDaysValue,
-                    dividendYieldValue
+                    dividendYieldValue,
                   )
                   .toFixed(3)}{" "}
                 $
               </Col>
+              <Col xl={3} className="justify-content-md-right">
+                Price ={" "}
+                {(
+                  consts.NUM_SHARES_PER_CONTRACT *
+                  theContract.getQty() *
+                  theContract.getPrice(
+                    currentPriceValue,
+                    interestRateValue,
+                    viATMValue,
+                    numDaysValue,
+                    dividendYieldValue,
+                  )
+                ).toFixed(0)}{" "}
+                $
+              </Col>
             </Row>
+
             <Row>
               <Col xl={1} className="justify-content-md-left">
                 &nbsp;
               </Col>
+              <Col xl={2} className="text-end">
+                <a href="javascript:alert('(underlying price - strike) for ITM option.');">
+                  Intrinsic value
+                </a>
+              </Col>
+              <Col xl={3} className="align-items-end">
+                Price ={" "}
+                {theContract.isITM(currentPriceValue)
+                  ? Math.abs(currentPriceValue - strikeValue).toFixed(3)
+                  : 0}
+                $
+              </Col>
+              <Col xl={3} className="justify-content-md-right">
+                {" "}
+              </Col>
+            </Row>
+
+            <Row>
               <Col xl={1} className="justify-content-md-left">
+                &nbsp;
+              </Col>
+              <Col xl={2} className="text-end">
+                <a href="javascript:alert('(option price - intrinsic value) for ITM option.');">
+                  Time value
+                </a>
+              </Col>
+              <Col xl={3} className="justify-content-md-right">
+                Price ={" "}
+                {Math.abs(
+                  theContract.getPrice(
+                    currentPriceValue,
+                    interestRateValue,
+                    viATMValue,
+                    numDaysValue,
+                    dividendYieldValue,
+                  ) - Math.abs(currentPriceValue - strikeValue),
+                ).toFixed(3)}{" "}
+                $
+              </Col>
+              <Col xl={3} className="justify-content-md-right">
+                {" "}
+              </Col>
+            </Row>
+
+            <Row>
+              <Col xl={1} className="justify-content-md-left">
+                &nbsp;
+              </Col>
+              <Col xl={2} className="justify-content-md-left">
                 <a href="javascript:alert('Delta is the rate of change on the option’s price with respect to changes in the price of the underlying asset.');">
                   DELTA
                 </a>
@@ -871,9 +977,24 @@ const Strategy = (charId: string) => {
                     interestRateValue,
                     viATMValue,
                     numDaysValue,
-                    dividendYieldValue
+                    dividendYieldValue,
                   )
                   .toFixed(3)}{" "}
+                $ / $
+              </Col>
+              <Col xl={3} className="justify-content-md-right">
+                Δ ={" "}
+                {(
+                  consts.NUM_SHARES_PER_CONTRACT *
+                  theContract.getQty() *
+                  theContract.getDelta(
+                    currentPriceValue,
+                    interestRateValue,
+                    viATMValue,
+                    numDaysValue,
+                    dividendYieldValue,
+                  )
+                ).toFixed(0)}{" "}
                 $ / $
               </Col>
             </Row>
@@ -881,7 +1002,7 @@ const Strategy = (charId: string) => {
               <Col xl={1} className="justify-content-md-left">
                 &nbsp;
               </Col>
-              <Col xl={1} className="justify-content-md-left">
+              <Col xl={2} className="justify-content-md-left">
                 <a href="javascript:alert('Gamma is the rate of change of the option’s Delta with respect to changes in the underlying stock.');">
                   GAMMA
                 </a>
@@ -894,7 +1015,7 @@ const Strategy = (charId: string) => {
                     interestRateValue,
                     viATMValue,
                     numDaysValue,
-                    dividendYieldValue
+                    dividendYieldValue,
                   )
                   .toFixed(3)}
               </Col>
@@ -903,7 +1024,7 @@ const Strategy = (charId: string) => {
               <Col xl={1} className="justify-content-md-left">
                 &nbsp;
               </Col>
-              <Col xl={1} className="justify-content-md-left">
+              <Col xl={2} className="justify-content-md-left">
                 <a href="javascript:alert('Theta is the rate of change of the option premium with respect to time.');">
                   THETA
                 </a>
@@ -916,9 +1037,24 @@ const Strategy = (charId: string) => {
                     interestRateValue,
                     viATMValue,
                     numDaysValue,
-                    dividendYieldValue
+                    dividendYieldValue,
                   )
                   .toFixed(3)}{" "}
+                $ / day
+              </Col>
+              <Col xl={3} className="justify-content-md-right">
+                Θ ={" "}
+                {(
+                  consts.NUM_SHARES_PER_CONTRACT *
+                  theContract.getQty() *
+                  theContract.getTheta(
+                    currentPriceValue,
+                    interestRateValue,
+                    viATMValue,
+                    numDaysValue,
+                    dividendYieldValue,
+                  )
+                ).toFixed(0)}{" "}
                 $ / day
               </Col>
             </Row>
@@ -926,7 +1062,7 @@ const Strategy = (charId: string) => {
               <Col xl={1} className="justify-content-md-left">
                 &nbsp;
               </Col>
-              <Col xl={1} className="justify-content-md-left">
+              <Col xl={2} className="justify-content-md-left">
                 <a href="javascript:alert('Rho is the rate of change of the option premium with respect to the risk-free rate.');">
                   RHO
                 </a>
@@ -939,7 +1075,7 @@ const Strategy = (charId: string) => {
                     interestRateValue,
                     viATMValue,
                     numDaysValue,
-                    dividendYieldValue
+                    dividendYieldValue,
                   )
                   .toFixed(3)}
               </Col>
@@ -948,7 +1084,7 @@ const Strategy = (charId: string) => {
               <Col xl={1} className="justify-content-md-left">
                 &nbsp;
               </Col>
-              <Col xl={1} className="justify-content-md-left">
+              <Col xl={2} className="justify-content-md-left">
                 <a href="javascript:alert('Vega is the rate of change of the option premium with respect to the volatility of the underlying asset.');">
                   VEGA
                 </a>
@@ -961,7 +1097,7 @@ const Strategy = (charId: string) => {
                     interestRateValue,
                     viATMValue,
                     numDaysValue,
-                    dividendYieldValue
+                    dividendYieldValue,
                   )
                   .toFixed(3)}
               </Col>
@@ -978,7 +1114,7 @@ const Strategy = (charId: string) => {
           <div>
             <Row>
               <Col xl={3} className="justify-content-md-left">
-                PRU
+                Average buying price
               </Col>
               <Col xl={2} className="text-sm-end param_text">
                 {pruValue} USD
@@ -1045,7 +1181,7 @@ const Strategy = (charId: string) => {
       <Row>
         <Col>
           {displayShareContractTypes()}
-          {displayOneLegOptionContractTypes()}
+          {displayOneLegOptionContractTypes(theContract)}
           {displayTwoLegsOptionContractTypes()}
           {displayContractNumbers()}
           {displayContractParameters(theContract)}
@@ -1055,101 +1191,32 @@ const Strategy = (charId: string) => {
       </Row>
       <Row>
         <Col>
-          <div id={charId}></div>
+          <div id={plChartId}></div>
+        </Col>
+        <Col>{theContract.displayInfo()}</Col>
+      </Row>
+      <Row>
+        <Col>
+          <div id={optionValueChartId}></div>
         </Col>
       </Row>
     </Container>
   );
 };
 //                     {theContract.getLegs() > 0 ? displaySigmaLinesSelector() : <div></div>}
-
-export default Strategy;
-
 /*
-
-const Strategy2 = (charId: string) => {
-    console.log('Strategy');
-    const flag = useRef(false);
-    const [testValue, setTestValue] = useState(0);
-    const [drawSigmaLines, setDrawSigmaLines] = useState(false);
-    const [numContractsValue, setNumContracts] = useState(consts.strategyDefaultNumContracts);
-    const [strikeValue, setStrikeValue] = useState(consts.strategyDefaultStrike);
-    const [strike1Value, setStrike1Value] = useState(consts.strategyDefaultStrike1);
-    const [strike2Value, setStrike2Value] = useState(consts.strategyDefaultStrike2);
-    const [premiumValue, setPremiumValue] = useState(consts.strategyDefaultPremium);
-    const [premium1Value, setPremium1Value] = useState(consts.strategyDefaultPremium1);
-    const [premium2Value, setPremium2Value] = useState(consts.strategyDefaultPremium2);
-    const [viATMValue, setViatmValue] = useState(consts.strategyDefaultVIATM);
-    const [numDaysValue, setNumDaysValue] = useState(consts.strategyDefaultNumDays);
-
-    const [currentPriceValue, setCurrentPriceValue] = useState(consts.strategyDefaultCurrentPrice);
-    const [pruValue, setPruValue] = useState(consts.strategyDefaultPRU);
-
-    const [sigma, setSigmaValue] = useState(strikeValue * (viATMValue) * Math.sqrt(numDaysValue / 365));
-    const [cost, setCost] = useState(0.0);
-    const [breakEven, setBreakEven] = useState(0.0);
-    const [maxLost, setMaxLost] = useState(0.0);
-    const [maxProfit, setMaxProfit] = useState(0.0);
-
-    const dummyContract = {
-        id: 0,
-        ticker: "None",
-        type: "Put",
-        strike: strikeValue.toString(),
-        expiration: "",
-        open_by: "",
-        close_by: "",
-        open_premium: premiumValue.toString(),
-        close_premium: premiumValue.toString(),
-        qty: numContractsValue.toString(),
-    } as IContractRow;
-
-    const [theContract, setTheContract] = useState<Contract.OptionContract>(new Contract.OptionContract([dummyContract] as IContractRow[]));
-
-    console.log('Strategy: testValue=', testValue);
-
-    useEffect(() => {
-        console.log('useEffect');
-        console.log('useEffect theContract.type', theContract.getType());
-
-        if (testValue === 0) {
-            console.log('useEffect testValue=', testValue);
-            setTestValue(testValue + 1);
-
-            const contractData = {
-                id: 0,
-                ticker: "None",
-                type: "Put",
-                strike: strikeValue.toString(),
-                expiration: "",
-                open_by: "",
-                close_by: "",
-                open_premium: premiumValue.toString(),
-                close_premium: premiumValue.toString(),
-                qty: numContractsValue.toString(),
-                PRU: +pruValue,
-            } as IContractRow;
-
-            contractData.type = "Long";
-            contractData.qty = (-numContractsValue).toString();
-            setTheContract(new Contract.Long([contractData] as IContractRow[]))
-
-
-
-
-        }
-    }, [testValue]);
-
-
-    return (
-        <Container fluid>
-            <Row>
-                <Col>
-                    charId= {charId}
-                </Col>
-            </Row>
-        </Container>
-    );
-}
+      <Row>
+        <Col>
+          <div id={plChartId}></div>
+        </Col>
+        <Col>{theContract.displayInfo()}</Col>
+      </Row>
+      <Row>
+        <Col>
+          <div id={optionValueChartId}></div>
+        </Col>
+      </Row>
 
 */
+export default Strategy;
+

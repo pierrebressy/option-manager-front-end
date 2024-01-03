@@ -1,4 +1,3 @@
-import { area } from "d3";
 import { I2DPoint, I2DSize } from "../interfaces/datatypes";
 
 export class GraphicElement {

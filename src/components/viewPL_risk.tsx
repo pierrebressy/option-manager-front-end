@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import apiMonthlyRisk, {
-  columnsMonthlyRisk,
-} from "../services/api_risk_monthly";
-import apiMonthlyPl, { columnsMonthlyPl } from "../services/api_pl_monthly";
+
+import * as api from "../services/backendApi";
+import { columnsMonthlyPl } from "../services/backendApi";
+import { columnsMonthlyRisk } from "../services/backendApi";
+
 import { IMonthlyPlRow, IMonthlyRiskRow } from "../interfaces/datatypes";
 
 import OptionsListComponent from "./classOptionsListComponent";
@@ -16,27 +17,24 @@ function PL_risk() {
   // load pl monthly from database
   useEffect(() => {
     !isPLMonthlyMounted &&
-      apiMonthlyPl.getPLMonthly().then((json: any) => {
+      //apiMonthlyPl.getPLMonthly().then((json: any) => {
+      api.getPLMonthly().then((json: any) => {
         setPLMonthly(json);
         setIsPLMonthlyMounted(true);
-        console.log("useEffect: api_pl_monthly", json);
-        console.log("useEffect: api_pl_monthly", plMonthly.length);
       });
   }, [isPLMonthlyMounted, plMonthly]);
 
   // load risk monthly from database
   useEffect(() => {
     !isRiskMonthlyMounted &&
-      apiMonthlyRisk.getRiskMonthly().then((json: any) => {
+      //apiMonthlyRisk.getRiskMonthly().then((json: any) => {
+      api.getRiskMonthly().then((json: any) => {
         setRiskMonthly(json);
         setIsRiskMonthlyMounted(true);
-        console.log("useEffect: api_risk_monthly", json);
       });
   }, [isRiskMonthlyMounted, riskMonthly]);
 
-  const handle = (row: any) => {
-    console.log("handle", row);
-  };
+  const handle = (row: any) => {};
 
   return (
     <div className="App">

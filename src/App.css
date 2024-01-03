@@ -120,9 +120,26 @@
   visibility: visible;
 }
 
+.option-line {
+  stroke: rgb(89, 191, 239);
+  stroke-opacity: 1;
+  fill-opacity: 0;
+  stroke-width: 2px;
+  visibility: visible;
+
+}
+
+.option-line-2 {
+  stroke: rgb(208, 215, 17);
+  stroke-opacity: 1;
+  fill-opacity: 0;
+  stroke-width: 2px;
+  visibility: visible;
+
+}
 
 .gray-hashed-line {
-  stroke: rgb(152, 152, 152);
+  stroke: rgb(196, 194, 194);
   stroke-opacity: 1;
   stroke-width: 1px;
   stroke-dasharray: 8, 4;
@@ -131,7 +148,7 @@
 }
 
 .dark-gray-hashed-line {
-  stroke: rgb(9, 5, 5);
+  stroke: rgb(151, 147, 147);
   stroke-opacity: 1;
   stroke-width: 1px;
   stroke-dasharray: 8, 4;
@@ -166,6 +183,45 @@
   font-size: 12px;
   font-family: Arial;
 }
+
+
+.ITM {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  background-color: rgb(49, 219, 43);
+  text-anchor: middle;
+  text-align: center;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  font-family: Arial;
+  align-content: center;
+}
+.OTM {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  background-color: rgb(219, 157, 43);
+  text-anchor: middle;
+  text-align: center;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  font-family: Arial;
+  align-content: center;
+}
+.ATM {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+  background-color: rgb(43, 122, 219);
+  text-anchor: middle;
+  text-align: center;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  font-family: Arial;
+  align-content: center;
+}
+
 
 .red-text {
   fill-opacity: 1;

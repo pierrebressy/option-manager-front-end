@@ -36,7 +36,7 @@ function AppLight() {
 
           <Tab eventKey="view_sectors" title="Sectors"></Tab>
           <Tab eventKey="strategies" title="Strategies">
-            {Strategy("chart-strategies")}
+            {Strategy("chart-strategies", "option-strategies")}
           </Tab>
         </Tabs>
       </header>
@@ -78,7 +78,7 @@ export default function App() {
             {SectorsView("chart-view-sectors")}
           </Tab>
           <Tab eventKey="strategies" title="Strategies">
-            {Strategy("chart-strategies")}
+            {Strategy("chart-strategies","option-strategies")}
           </Tab>
         </Tabs>
       </header>

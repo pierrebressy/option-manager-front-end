@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import OptionsListComponent from "./classOptionsListComponent";
-import apiOpenedShortPuts, {
-  columnsOpenedShortPuts,
-} from "../services/api_opened_short_puts";
-import apiTickerPrices from "../services/api_ticker_prices";
+
+import * as api from "../services/backendApi";
+import { columnsOpenedShortPuts } from "../services/backendApi";
+
 import * as utils from "../services/utils";
 import {
   IContractRow,
@@ -44,7 +44,7 @@ function OpenedShortPuts(charId: string) {
 
   useEffect(() => {
     !isOpenedContractsMounted &&
-      apiOpenedShortPuts.getContractsList().then((json) => {
+      api.getOpenedShortPutsContractsList().then((json) => {
         setIsOpenedContractsMounted(true);
         setOpenedContracts(json);
         open_short_puts_contracts_table.length = 0;
@@ -61,7 +61,7 @@ function OpenedShortPuts(charId: string) {
   // load ticker prices from database
   useEffect(() => {
     !isTickerPricesMounted &&
-      apiTickerPrices.getTickerPrices(ticker).then((json) => {
+      api.getTickerPrices(ticker).then((json) => {
         setTickerPrices(json);
         setIsTickerPricesMounted(true);
       });

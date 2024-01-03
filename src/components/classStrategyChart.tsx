@@ -335,7 +335,6 @@ export class StrategyChart {
       console.log("drawContractProfile::e=", e);
     }
   }
-
   displayInitialCostInfo(contract: any, currentPriceValue: number = 0.0) {
     if (contract.getLegs() > 0) {
       this.drawCircleLeftScale(
@@ -403,7 +402,6 @@ export class StrategyChart {
         .text(currentPL.toFixed(0).toString());
     }
   }
-
   prepareChartScales(
     contract: any,
     currentPriceValue: number = 0.0,
@@ -440,12 +438,10 @@ export class StrategyChart {
       .range([this.height / 2, 0]);
     this.yAxisRight = d3.axisRight(this.yRight);
   }
-
   cleanChart() {
     const svg_tmp = d3.select("#" + this.id);
     svg_tmp.selectAll("*").remove();
   }
-
   setupChart() {
     this.svg = d3
       .select("#" + this.id)
@@ -465,7 +461,6 @@ export class StrategyChart {
       .attr("x", 0)
       .attr("y", 0);
   }
-
   addAxis() {
     this.svg
       .append("g")
@@ -497,7 +492,6 @@ export class StrategyChart {
       .attr("class", "white-text")
       .text("% success");
   }
-
   createChart(
     contract: any,
     sigma: number = 0.0,
@@ -511,7 +505,6 @@ export class StrategyChart {
     this.drawVerticalLineAtStrike(contract, currentPriceValue);
     this.displayInitialCostInfo(contract, currentPriceValue);
   }
-
   drawProfileForDaysLeft(contract: any, iv: number, numDaysValue: number) {
     contract.drawProfileForDaysLeft(
       this.svg,
@@ -524,7 +517,6 @@ export class StrategyChart {
       numDaysValue,
     );
   }
-
   drawPLForDaysLeft(
     contract: any,
     price: number,
@@ -567,7 +559,6 @@ export class StrategyChart {
       .attr("y", this.y(p_and_l) + 4)
       .text(p_and_l.toFixed(0).toString());
   }
-
   drawAllSigmaLines(
     contract: any,
     sigma: number = 0.0,

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 
-import apiTickerPrices from "../services/api_ticker_prices";
 import { ITickerPriceRow } from "../interfaces/datatypes";
 import * as Mychart from "./graphSectorsChart";
+import * as api from "../services/backendApi";
 
 function SectorsView(charId: string) {
   const [tickerChart] = useState<Mychart.SectorChart>(
@@ -54,7 +54,6 @@ function SectorsView(charId: string) {
       let cmd =
         "http://localhost:8000/api/update_ticker_price_cvsfiles?ticker=" +
         ticker;
-      console.log(cmd);
       fetch(cmd, { method: "GET" }).then((res) => {
         fetch(
           "http://localhost:8000/api/update_db_ticker_prices?ticker=" + ticker,
@@ -77,12 +76,7 @@ function SectorsView(charId: string) {
 
   useEffect(() => {
     if (isDataFetchedFromDB && ticker !== "") {
-      console.log(
-        "useEffect1 isDataFetchedFromDB: isDataFetchedFromDB=",
-        isDataFetchedFromDB,
-      );
-      apiTickerPrices.getTickerPrices(ticker).then((json) => {
-        console.log("TickerView: api_ticker_prices.getTickerPrices", ticker);
+      api.getTickerPrices(ticker).then((json) => {
         setTickerPrices(json);
         setPriceUpdatedFromDB(true);
       });
@@ -91,16 +85,10 @@ function SectorsView(charId: string) {
 
   useEffect(() => {
     if (isPriceUpdatedFromDB === true) {
-      console.log(
-        "useEffect2 isPriceUpdatedFromDB: isPriceUpdatedFromDB=",
-        isPriceUpdatedFromDB,
-      );
       if (!isChartCreated) {
-        console.log("useEffect2 createChartNew");
         tickerChart.createChartnew();
         setIsChartCreated(true);
       } else if (ticker !== "") {
-        console.log("useEffect2 addCurve", ticker, tickerPrices.length);
         tickerChart.addTickerLine(ticker, tickerPrices, true, "red");
       }
     }
